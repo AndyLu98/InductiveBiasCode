@@ -186,11 +186,6 @@ def FindComplexityOfFunction(xarray, yarray, epsilon):
 
     loss = 10000000
 
-    number_of_pieces = None
-
-    number_of_pieces_low = 0
-    number_of_pieces_high = 1
-
     penalty = 0.0001
 
     penalty_lower = None
