@@ -1,3 +1,5 @@
+import numpy as np
+
 #DP algorithm for segmented regression. 
 #Most credit to https://github.com/solohikertoo/segmented-least-squares/
 
@@ -171,4 +173,63 @@ x_fit, y_fit, segments = segls(N, x_temp, y_temp, c)
 mse = MSE_of_answer(segments, x_temp, y_temp, N)  
 
 
+########This code is for finding the complexity of a given function defined by: 
+#K(f, epsilon) = Piece_min(function, Data, epsilon)
+# f -- function
+# epsilon: training loss cutoff. 
+# Piece_min: Minimum number of pieces by DP needed to achieve this epsilon.
+# Actually not able to find the most exact value since the number of pieces is not uniformly distributed. 
+# Find the best estimate. 
+epsilon = 0.001
+
+def FindComplexityOfFunction(xarray, yarray, epsilon):
+
+    loss = 10000000
+
+    number_of_pieces = None
+
+    number_of_pieces_low = 0
+    number_of_pieces_high = 1
+
+    penalty = 0.0001
+
+    penalty_lower = None
+
+    penalty_upper = None
+
+    while loss > epsilon:
+        penalty_upper = penalty * 2.0
+        x_fit, y_fit, segments = segls(N, x_temp, y_temp, penalty)
+        penalty_lower = penalty
+        penalty = penalty / 2.0  
+        mse = MSE_of_answer(segments, x_temp, y_temp, N)
+        number_of_pieces = len(segments)
+        loss = mse
+
+    penalty_old = penalty
+
+    while (True):
+
+        penalty = (penalty_upper + penalty_lower) / 2.0
+        penalty_new = penalty
+
+        if MSE_of_answer(segls(N, x_temp, y_temp, penalty)[2], x_temp, y_temp, N) < epsilon:
+            penalty_lower = penalty 
+
+        elif MSE_of_answer(segls(N, x_temp, y_temp, penalty)[2], x_temp, y_temp, N) > epsilon:
+            penalty_upper = penalty
+
+        print(penalty_old)
+        print(penalty_new)
+
+        if abs(penalty_new - penalty_old) < 10e-10:
+            print(MSE_of_answer(segls(N, x_temp, y_temp, penalty)[2], x_temp, y_temp, N))
+            break
+
+        penalty_old = penalty_new
+
+    return len(segls(N, x_temp, y_temp, penalty)[2])
+
+
+print "Complexity of the Function with respect to epsilon:" + str(epsilon) + ": " + str(FindComplexityOfFunction(x_temp, y_temp, epsilon))
 
