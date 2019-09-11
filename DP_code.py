@@ -180,13 +180,13 @@ mse = MSE_of_answer(segments, x_temp, y_temp, N)
 # Piece_min: Minimum number of pieces by DP needed to achieve this epsilon.
 # Actually not able to find the most exact value since the number of pieces is not uniformly distributed. 
 # Find the best estimate. 
-epsilon = 0.001
+epsilon = 0.001 
 
 def FindComplexityOfFunction(xarray, yarray, epsilon):
 
     loss = 10000000
 
-    penalty = 100000000
+    penalty = 10000
 
     penalty_lower = None
 
@@ -227,4 +227,3 @@ def FindComplexityOfFunction(xarray, yarray, epsilon):
 
 
 print "Complexity of the Function with respect to epsilon:" + str(epsilon) + ": " + str(FindComplexityOfFunction(x_temp, y_temp, epsilon))
-
