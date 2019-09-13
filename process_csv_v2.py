@@ -196,3 +196,5 @@ plt.legend(loc='upper right')
 plt.title("Fitting Quadratic function with different algorithms")
 
 plt.show()
+
+#See example baseline plot for what you can expect the output to look like. 
